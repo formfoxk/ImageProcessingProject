@@ -62,6 +62,46 @@ BEGIN_MESSAGE_MAP(CImageProcessingSoftwareDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_COMMAND(ID_OPEN, &CImageProcessingSoftwareDlg::OnOpen)
+	ON_COMMAND(ID_SAVE, &CImageProcessingSoftwareDlg::OnSave)
+	ON_COMMAND(ID_DSAVE, &CImageProcessingSoftwareDlg::OnDsave)
+	ON_COMMAND(ID_EXIT, &CImageProcessingSoftwareDlg::OnExit)
+	ON_COMMAND(ID_UNDO, &CImageProcessingSoftwareDlg::OnUndo)
+	ON_COMMAND(ID_TRANS_LR, &CImageProcessingSoftwareDlg::OnTransLr)
+	ON_COMMAND(ID_TRANS_OD, &CImageProcessingSoftwareDlg::OnTransOd)
+	ON_COMMAND(ID_ENLARGH_NN, &CImageProcessingSoftwareDlg::OnEnlarghNn)
+	ON_COMMAND(ID_ENLARGE_LI, &CImageProcessingSoftwareDlg::OnEnlargeLi)
+	ON_COMMAND(ID_REDUCE_NN, &CImageProcessingSoftwareDlg::OnReduceNn)
+	ON_COMMAND(ID_REDUCE_LI, &CImageProcessingSoftwareDlg::OnReduceLi)
+	ON_COMMAND(ID_ROTATION, &CImageProcessingSoftwareDlg::OnRotation)
+	ON_COMMAND(ID_TRANS_RGBTOGRAY, &CImageProcessingSoftwareDlg::OnTransRgbtogray)
+	ON_COMMAND(ID_BRIGHT_PLUS, &CImageProcessingSoftwareDlg::OnBrightPlus)
+	ON_COMMAND(ID_BRIGHT_MINUS, &CImageProcessingSoftwareDlg::OnBrightMinus)
+	ON_COMMAND(ID_BRIGHTP_PLUS, &CImageProcessingSoftwareDlg::OnBrightpPlus)
+	ON_COMMAND(ID_BRIGHTP_MINUS, &CImageProcessingSoftwareDlg::OnBrightpMinus)
+	ON_COMMAND(ID_BIT_PLANES, &CImageProcessingSoftwareDlg::OnBitPlanes)
+	ON_COMMAND(ID_MATRIX_D, &CImageProcessingSoftwareDlg::OnMatrixD)
+	ON_COMMAND(ID_MATRIX_D2, &CImageProcessingSoftwareDlg::OnMatrixD2)
+	ON_COMMAND(ID_NEGATIVE, &CImageProcessingSoftwareDlg::OnNegative)
+	ON_COMMAND(ID_HISTOGRAM_AUTO, &CImageProcessingSoftwareDlg::OnHistogramAuto)
+	ON_COMMAND(ID_HISTOGRAM_USER, &CImageProcessingSoftwareDlg::OnHistogramUser)
+	ON_COMMAND(ID_HISTOGRAM_EQUL, &CImageProcessingSoftwareDlg::OnHistogramEqul)
+	ON_COMMAND(ID_THERESHOLDING, &CImageProcessingSoftwareDlg::OnTheresholding)
+	ON_COMMAND(ID_GUASSIAN_33, &CImageProcessingSoftwareDlg::OnGuassian33)
+	ON_COMMAND(ID_GUASSIAN_77, &CImageProcessingSoftwareDlg::OnGuassian77)
+	ON_COMMAND(ID_SHARPENING_77, &CImageProcessingSoftwareDlg::OnSharpening77)
+	ON_COMMAND(ID_AVER_77, &CImageProcessingSoftwareDlg::OnAver77)
+	ON_COMMAND(ID_MEDIAN_77, &CImageProcessingSoftwareDlg::OnMedian77)
+	ON_COMMAND(ID_BINARY_OPEN, &CImageProcessingSoftwareDlg::OnBinaryOpen)
+	ON_COMMAND(ID_BINARY_CLOSE, &CImageProcessingSoftwareDlg::OnBinaryClose)
+	ON_COMMAND(ID_GRAY_OPEN, &CImageProcessingSoftwareDlg::OnGrayOpen)
+	ON_COMMAND(ID_GRAY_CLOSE, &CImageProcessingSoftwareDlg::OnGrayClose)
+	ON_COMMAND(ID_SOBEL_MASK, &CImageProcessingSoftwareDlg::OnSobelMask)
+	ON_COMMAND(ID_LAPLACIAN_MASK, &CImageProcessingSoftwareDlg::OnLaplacianMask)
+	ON_COMMAND(ID_TOOL, &CImageProcessingSoftwareDlg::OnTool)
+	ON_COMMAND(ID_STATUS_BAR, &CImageProcessingSoftwareDlg::OnStatusBar)
+	ON_COMMAND(ID_HISTOGRAM_WINDOW, &CImageProcessingSoftwareDlg::OnHistogramWindow)
+	ON_COMMAND(ID_HELP, &CImageProcessingSoftwareDlg::OnHelp)
 END_MESSAGE_MAP()
 
 
@@ -97,6 +137,8 @@ BOOL CImageProcessingSoftwareDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+
+
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -149,4 +191,247 @@ HCURSOR CImageProcessingSoftwareDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
+
+
+// 열기
+void CImageProcessingSoftwareDlg::OnOpen()
+{
+	MessageBox("열기");
+}
+
+// 저장
+void CImageProcessingSoftwareDlg::OnSave()
+{
+	MessageBox("저장");
+}
+
+// 다른이름으로 저장
+void CImageProcessingSoftwareDlg::OnDsave()
+{
+	MessageBox("다른이름으로 저장");
+}
+
+// 끝내기
+void CImageProcessingSoftwareDlg::OnExit()
+{
+	MessageBox("끝내기");
+}
+
+// 실행 취소
+void CImageProcessingSoftwareDlg::OnUndo()
+{
+	MessageBox("실행취소");
+}
+
+// 좌우반전
+void CImageProcessingSoftwareDlg::OnTransLr()
+{
+	MessageBox("좌우반전");
+}
+
+// 상하반전
+void CImageProcessingSoftwareDlg::OnTransOd()
+{
+	MessageBox("상하반전");
+}
+
+// 확대 with NN
+void CImageProcessingSoftwareDlg::OnEnlarghNn()
+{
+	MessageBox("확대 with NN");
+}
+
+// 확대 with 선형보간
+void CImageProcessingSoftwareDlg::OnEnlargeLi()
+{
+	MessageBox("확대 with 선형보간");
+}
+
+// 축소 with NN
+void CImageProcessingSoftwareDlg::OnReduceNn()
+{
+	MessageBox("축소 with NN");
+}
+
+// 축소 with 선형보간
+void CImageProcessingSoftwareDlg::OnReduceLi()
+{
+	MessageBox("축소 with 선형보간");
+}
+
+// 회전
+void CImageProcessingSoftwareDlg::OnRotation()
+{
+	MessageBox("회전");
+}
+
+// RGB to Gray 변환
+void CImageProcessingSoftwareDlg::OnTransRgbtogray()
+{
+	MessageBox("RGB to Gray 변환");
+}
+
+// 밝기값 증가(+)
+void CImageProcessingSoftwareDlg::OnBrightPlus()
+{
+	MessageBox("밝기값 증가(+)");
+}
+
+// 밝기값 감소(-)
+void CImageProcessingSoftwareDlg::OnBrightMinus()
+{
+	MessageBox("밝기값 감소(-)");
+}
+
+// 밝기값 대비 증가(*)
+void CImageProcessingSoftwareDlg::OnBrightpPlus()
+{
+	MessageBox("밝기값 대비 증가(*)");
+}
+
+// 밝기값 대비 감소(/)
+void CImageProcessingSoftwareDlg::OnBrightpMinus()
+{
+	MessageBox("밝기값 대비 감소(/)");
+}
+
+// 비트플레인
+void CImageProcessingSoftwareDlg::OnBitPlanes()
+{
+	MessageBox("비트플레인");
+}
+
+// D 행렬
+void CImageProcessingSoftwareDlg::OnMatrixD()
+{
+	MessageBox("D 행렬");
+}
+
+// D2 행렬
+void CImageProcessingSoftwareDlg::OnMatrixD2()
+{
+	MessageBox("D2 행렬");
+}
+
+// Negative 영상
+void CImageProcessingSoftwareDlg::OnNegative()
+{
+	MessageBox("Negative 영상");
+}
+
+// 히스토그램 스트레칭 (자동)
+void CImageProcessingSoftwareDlg::OnHistogramAuto()
+{
+	MessageBox("히스토그램 스트레칭 (자동)");
+}
+
+// 히스토그램 스트레칭 (사용자 입력)
+void CImageProcessingSoftwareDlg::OnHistogramUser()
+{
+	MessageBox("히스토그램 스트레칭 (사용자 입력)");
+}
+
+// 히스토그램 평준화 (Equalization)
+void CImageProcessingSoftwareDlg::OnHistogramEqul()
+{
+	MessageBox("히스토그램 평준화 (Equalization)");
+}
+
+// 임계치 필터링 (Thresholding)
+void CImageProcessingSoftwareDlg::OnTheresholding()
+{
+	MessageBox("임계치 필터링 (Thresholding)");
+}
+
+// 가우시간 블러링(3*3)
+void CImageProcessingSoftwareDlg::OnGuassian33()
+{
+	MessageBox("가우시간 블러링(3*3)");
+}
+
+// 가우시간 블러링(7*7)
+void CImageProcessingSoftwareDlg::OnGuassian77()
+{
+	MessageBox("가우시간 블러링(7*7)");
+}
+
+// 샤프닝 (7*7)
+void CImageProcessingSoftwareDlg::OnSharpening77()
+{
+	MessageBox("샤프닝 (7*7)");
+}
+
+// 평균값 필터링 (7*7)
+void CImageProcessingSoftwareDlg::OnAver77()
+{
+	MessageBox("평균값 필터링 (7*7)");
+}
+
+// 중간값 필터링 (7*7)
+void CImageProcessingSoftwareDlg::OnMedian77()
+{
+	MessageBox("중간값 필터링 (7*7)");
+}
+
+// 열림 연산 (Binary)
+void CImageProcessingSoftwareDlg::OnBinaryOpen()
+{
+	MessageBox("열림 연산 (Binary)");
+}
+
+// 닫힘 연산 (Binary)
+void CImageProcessingSoftwareDlg::OnBinaryClose()
+{
+	MessageBox("닫힘 연산 (Binary)");
+}
+
+// 열림 연산 (Gray)
+void CImageProcessingSoftwareDlg::OnGrayOpen()
+{
+	MessageBox("열림 연산 (Gray)");
+}
+ 
+// 닫힘 연산 (Gray)
+void CImageProcessingSoftwareDlg::OnGrayClose()
+{
+	MessageBox("닫힘 연산 (Gray)");
+}
+
+
+// 소벨 마스크
+void CImageProcessingSoftwareDlg::OnSobelMask()
+{
+	MessageBox("소벨 마스크");
+}
+
+// 라플라시안 마스크
+void CImageProcessingSoftwareDlg::OnLaplacianMask()
+{
+	MessageBox("라플라시안 마스크");
+}
+
+// 도구 상자
+void CImageProcessingSoftwareDlg::OnTool()
+{
+	MessageBox("도구 상자");
+}
+
+// 상태 표시줄
+void CImageProcessingSoftwareDlg::OnStatusBar()
+{
+	MessageBox("상태 표시줄");
+}
+
+// 히스토그램 윈도우
+void CImageProcessingSoftwareDlg::OnHistogramWindow()
+{
+	MessageBox("히스토그램 윈도우");
+}
+
+// 도움말
+void CImageProcessingSoftwareDlg::OnHelp()
+{
+	MessageBox("도움말");
+}
+
 

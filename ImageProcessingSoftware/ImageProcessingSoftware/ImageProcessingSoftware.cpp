@@ -51,6 +51,9 @@ BOOL CImageProcessingSoftwareApp::InitInstance()
 
 	CWinApp::InitInstance();
 
+	// Dialog Accelerators
+	m_hAccelTable = LoadAccelerators(AfxGetInstanceHandle(),
+    MAKEINTRESOURCE(IDR_ACCELERATOR1));
 
 	AfxEnableControlContainer();
 
@@ -100,3 +103,17 @@ BOOL CImageProcessingSoftwareApp::InitInstance()
 	return FALSE;
 }
 
+
+
+BOOL CImageProcessingSoftwareApp::ProcessMessageFilter(int code, LPMSG lpMsg)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	if (code >= 0 && m_pMainWnd && m_hAccelTable)
+	{
+		if (::TranslateAccelerator(m_pMainWnd->m_hWnd, m_hAccelTable, lpMsg))
+			return TRUE;
+	}
+
+	return CWinApp::ProcessMessageFilter(code, lpMsg);
+}

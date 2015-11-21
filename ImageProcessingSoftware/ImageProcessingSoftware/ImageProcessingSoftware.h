@@ -24,9 +24,13 @@ public:
 public:
 	virtual BOOL InitInstance();
 
+// Dialog Accelerators
+	public:HACCEL m_hAccelTable;
+
 // 구현입니다.
 
 	DECLARE_MESSAGE_MAP()
+	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 };
 
 extern CImageProcessingSoftwareApp theApp;
