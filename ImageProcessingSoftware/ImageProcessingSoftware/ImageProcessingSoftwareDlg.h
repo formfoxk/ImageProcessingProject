@@ -19,8 +19,11 @@ public:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 지원입니다.
 
 
-
 // 구현입니다.
+private:
+	IplImage *image;
+	IplImage *preimage;
+
 protected:
 	HICON m_hIcon;
 
