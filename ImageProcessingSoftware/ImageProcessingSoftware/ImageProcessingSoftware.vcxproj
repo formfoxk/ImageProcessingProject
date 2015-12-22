@@ -104,19 +104,23 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="HistStrechDlg.h" />
     <ClInclude Include="ImageProcessingSoftware.h" />
     <ClInclude Include="ImageProcessingSoftwareDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="ValueDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="HistStrechDlg.cpp" />
     <ClCompile Include="ImageProcessingSoftware.cpp" />
     <ClCompile Include="ImageProcessingSoftwareDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ValueDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ImageProcessingSoftware.rc" />

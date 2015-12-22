@@ -203,6 +203,24 @@ HCURSOR CImageProcessingSoftwareDlg::OnQueryDragIcon()
 // 열기
 void CImageProcessingSoftwareDlg::OnOpen()
 {
+<<<<<<< HEAD
+	char szFilter[] = "Image (*.bmp, *.gif, *.jpg) |*.bmp;*.gif;*.jpg||";
+	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY, szFilter);
+
+	if (IDOK != dlg.DoModal()) {
+		return;
+	}
+
+	// FileLoad
+	CString fileName = dlg.GetPathName();
+	cimg = cvLoadImage(fileName, CV_LOAD_IMAGE_COLOR);
+
+
+	if(pimg == NULL) 
+		initUndo();
+
+	// Display
+=======
 	// 필터 설정
 	char szFilter[]= "Image File(*.bmp;*.jpg)| *.bmp;*.jpg|ALL File(*.*)}";
  
@@ -220,12 +238,24 @@ void CImageProcessingSoftwareDlg::OnOpen()
 	cimg = cvLoadImage(strPathName, CV_LOAD_IMAGE_UNCHANGED);
 	pimg = cimg;
 
+>>>>>>> feb3b19bee079a2b3f9ce352dbb94aeb36ca92c7
 	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // 저장
 void CImageProcessingSoftwareDlg::OnSave()
 {
+<<<<<<< HEAD
+	printf("Log : Image storage ");
+	if(cimg != NULL){
+		
+		CString fileName("./save.jpg");
+		cvSaveImage(fileName, cimg);
+
+		printf("[SUCCESS]\n");
+	}else
+		printf("[FAILURE]\n");
+=======
 	if(cimg == nullptr){
 		AfxMessageBox(_T("이미지를 열지 않았습니다."));
 		return;
@@ -238,11 +268,22 @@ void CImageProcessingSoftwareDlg::OnSave()
 	if(!cvSaveImage(strPathName, cimg))
 		AfxMessageBox(_T("저장을 실패 했습니다."));
 	
+>>>>>>> feb3b19bee079a2b3f9ce352dbb94aeb36ca92c7
 }
 
 // 다른이름으로 저장
 void CImageProcessingSoftwareDlg::OnDsave()
 {
+<<<<<<< HEAD
+	char szFilter[] = "JPG (*.jpg) |*.jpg|BMP (*.bmp) |*.bmp|GIF (*.gif) |*.gif||";
+	CFileDialog dlg(FALSE, "|*.jpg|", NULL, OFN_HIDEREADONLY, szFilter);
+
+	if (IDOK != dlg.DoModal()) return;
+
+	CString fileName = dlg.GetPathName();
+
+	cvSaveImage(fileName, cimg);
+=======
 	if(cimg == nullptr){
 		AfxMessageBox(_T("이미지를 열지 않았습니다."));
 		return;
@@ -259,6 +300,7 @@ void CImageProcessingSoftwareDlg::OnDsave()
 		if(!cvSaveImage(strPathName, cimg))
 		AfxMessageBox(_T("저장을 실패 했습니다."));
 	}
+>>>>>>> feb3b19bee079a2b3f9ce352dbb94aeb36ca92c7
 }
 
 // 끝내기
@@ -270,33 +312,88 @@ void CImageProcessingSoftwareDlg::OnExit()
 // 실행 취소
 void CImageProcessingSoftwareDlg::OnUndo()
 {
+<<<<<<< HEAD
+	printf("Log : Undo ");
+	// 이미지 로드가 안된 경우 || 이미지가 같은 경우
+	if(pimg == NULL && cimg == NULL || pimg == cimg){
+		printf("[FAILURE]\n");
+		return;
+	}
+	else{
+		cvReleaseImage(&cimg);
+		cimg = pimg;
+		DisplayIplImage(cimg, m_pDC, dsprect);
+	
+		printf("[SUCCESS]\n");
+	}
+	
+=======
 	if(cimg != pimg){
 		cvReleaseImage(&cimg);
 		cimg = pimg;
 		DisplayIplImage(cimg, m_pDC, dsprect);
 	}
+>>>>>>> feb3b19bee079a2b3f9ce352dbb94aeb36ca92c7
 }
 
 // 좌우반전
 void CImageProcessingSoftwareDlg::OnTransLr()
 {
+<<<<<<< HEAD
+	printf("Log : Image invert left and right ");
+	if (cimg == NULL){
+		printf("[FAILURE]\n");
+		return;
+	}
+
+	initUndo();
+	for (int i = 0; i < cimg->height; i++) {
+		for (int j = 0; j < cimg->width/2; j++) {
+			CvScalar tmp = cvGet2D(cimg, i, j);
+			cvSet2D(cimg, i, j, cvGet2D(cimg, i, cimg->width - j -1));
+			cvSet2D(cimg, i,cimg->width- j -1, tmp);
+		}
+	}
+	DisplayIplImage(cimg, m_pDC, dsprect);
+	printf("[SUCCESS]\n");
+=======
 	if(cimg != pimg){
 		cvReleaseImage(&pimg);
 		pimg = cimg;
 	}
 	cimg = reflect(cimg, 1);
 	DisplayIplImage(cimg, m_pDC, dsprect);
+>>>>>>> feb3b19bee079a2b3f9ce352dbb94aeb36ca92c7
 }
 
 // 상하반전
 void CImageProcessingSoftwareDlg::OnTransOd()
 {
+<<<<<<< HEAD
+	printf("Log : Image invert up and down ");
+	if (cimg == NULL){
+		printf("[FAILURE]\n");
+		return;
+	}
+
+	initUndo();
+	for (int i = 0; i < cimg->height /2; i++) {
+		for (int j = 0; j < cimg->width; j++) {
+			CvScalar tmp = cvGet2D(cimg, i, j);
+			cvSet2D(cimg, i, j, cvGet2D(cimg,cimg->height -  i - 1, j));
+			cvSet2D(cimg, cimg->height - i - 1, j, tmp);
+		}
+	}
+	DisplayIplImage(cimg, m_pDC, dsprect);
+	printf("[SUCCESS]\n");
+=======
 	if(cimg != pimg){
 		cvReleaseImage(&pimg);
 		pimg = cimg;
 	}
 	cimg = reflect(cimg, -1);
 	DisplayIplImage(cimg, m_pDC, dsprect);
+>>>>>>> feb3b19bee079a2b3f9ce352dbb94aeb36ca92c7
 }
 
 // 확대 with NN
@@ -332,61 +429,297 @@ void CImageProcessingSoftwareDlg::OnRotation()
 // RGB to Gray 변환
 void CImageProcessingSoftwareDlg::OnTransRgbtogray()
 {
-	MessageBox("RGB to Gray 변환");
+	printf("Log : Image RGB to Gray ");
+	if(tranRgbToGray()) printf("[SUCCESS]\n");
+	else printf("[FAILURE]\n");
+		
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // 밝기값 증가(+)
 void CImageProcessingSoftwareDlg::OnBrightPlus()
 {
-	MessageBox("밝기값 증가(+)");
+	printf("Log : Image increase brightness ");
+	if (cimg == NULL){
+		printf("[FAILURE]\n");
+		return;
+	}
+
+	ValueDlg dlg = new ValueDlg();
+	if (IDOK != dlg.DoModal()) return;
+
+	initUndo();
+	if(!isGray(cimg)) tranRgbToGray();
+
+	int i, j, t, value;
+	value = dlg.m_value;
+
+	for (i = 0; i < cimg->height; i++) {
+		for (j = 0; j < cimg->width; j++) {
+			CvScalar tmp = cvGet2D(cimg, i, j);
+			
+			t = (int)tmp.val[0];
+			t += value;
+			if (t > 255) t = 255;
+			else if (t < 0) t = 0;
+			tmp.val[0] = t;
+			
+			cvSet2D(cimg, i, j, tmp);
+		}
+	}
+	printf("[SUCCESS]\n");
+
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // 밝기값 감소(-)
 void CImageProcessingSoftwareDlg::OnBrightMinus()
 {
-	MessageBox("밝기값 감소(-)");
+	printf("Log : Image decrease brightness ");
+	if (cimg == NULL){
+		printf("[FAILURE]\n");
+		return;
+	}
+
+	ValueDlg dlg = new ValueDlg();
+	if (IDOK != dlg.DoModal()) return;
+
+	initUndo();
+	if(!isGray(cimg)) tranRgbToGray();
+
+	int i, j, t, value;
+	value = dlg.m_value;
+
+	for (i = 0; i < cimg->height; i++) {
+		for (j = 0; j < cimg->width; j++) {
+			CvScalar tmp = cvGet2D(cimg, i, j);
+			
+			t = (int)tmp.val[0];
+			t -= value;
+			if (t > 255) t = 255;
+			else if (t < 0) t = 0;
+			tmp.val[0] = t;
+			
+			cvSet2D(cimg, i, j, tmp);
+		}
+	}
+	printf("[SUCCESS]\n");
+
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // 밝기값 대비 증가(*)
 void CImageProcessingSoftwareDlg::OnBrightpPlus()
 {
-	MessageBox("밝기값 대비 증가(*)");
+	printf("Log : Image increase contrast brightness ");
+	if (cimg == NULL){
+		printf("[FAILURE]\n");
+		return;
+	}
+
+	ValueDlg dlg = new ValueDlg();
+	if (IDOK != dlg.DoModal()) return;
+
+	initUndo();
+	if(!isGray(cimg)) tranRgbToGray();
+
+	int i, j, t;
+	double rate = (double)dlg.m_value/100;
+
+	for (i = 0; i < cimg->height; i++) {
+		for (j = 0; j < cimg->width; j++) {
+			CvScalar tmp = cvGet2D(cimg, i, j);
+			
+			t = (int)tmp.val[0];
+			t = t + (int)(t * rate);
+			if (t > 255) t = 255;
+			else if (t < 0) t = 0;
+			tmp.val[0] = t;
+			
+			cvSet2D(cimg, i, j, tmp);
+		}
+	}
+	printf("[SUCCESS]\n");
+
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // 밝기값 대비 감소(/)
 void CImageProcessingSoftwareDlg::OnBrightpMinus()
 {
-	MessageBox("밝기값 대비 감소(/)");
+	printf("Log : Image decrease contrast brightness ");
+	if (cimg == NULL){
+		printf("[FAILURE]\n");
+		return;
+	}
+
+	ValueDlg dlg = new ValueDlg();
+	if (IDOK != dlg.DoModal()) return;
+
+	initUndo();
+	if(!isGray(cimg)) tranRgbToGray();
+
+	int i, j, t;
+	double rate = (double)dlg.m_value/100;
+
+	for (i = 0; i < cimg->height; i++) {
+		for (j = 0; j < cimg->width; j++) {
+			CvScalar tmp = cvGet2D(cimg, i, j);
+			
+			t = (int)tmp.val[0];
+			t = t - (int)(t * rate);
+			if (t > 255) t = 255;
+			else if (t < 0) t = 0;
+			tmp.val[0] = t;
+			
+			cvSet2D(cimg, i, j, tmp);
+		}
+	}
+	printf("[SUCCESS]\n");
+
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // 비트플레인
 void CImageProcessingSoftwareDlg::OnBitPlanes()
 {
-	MessageBox("비트플레인");
+	printf("Log : bitplane ");
+	if (cimg == NULL){
+		printf("[FAILURE]\n");
+		return;
+	}
+
+	ValueDlg dlg = new ValueDlg();
+	if (IDOK != dlg.DoModal()) return;
+
+	initUndo();
+	if(!isGray(cimg)) tranRgbToGray();
+
+	int value = dlg.m_value;
+	for (int i = 0; i < cimg->height; i++) {
+		for (int j = 0; j < cimg->width; j++) {
+			CvScalar tmp = cvGet2D(cimg, i, j);
+			tmp.val[0] = (int)(tmp.val[0] / pow(2.0, value)) % 2;
+			if (tmp.val[0] == 0)
+				tmp.val[0] = 0;
+			else
+				tmp.val[0] = 255;
+			cvSet2D(cimg, i, j, tmp);
+		}
+	}
+	printf("[SUCCESS]\n");
+
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // D 행렬
 void CImageProcessingSoftwareDlg::OnMatrixD()
 {
-	MessageBox("D 행렬");
+	printf("Log : D Matrix");
+	if (cimg == NULL){
+		printf("[FAILURE]\n");
+		return;
+	}
+
+	initUndo();
+	if(!isGray(cimg)) tranRgbToGray();
+	
+	const int ms = 2;
+	int dithMx[ms][ms] = { {0,128},{192,64} };
+
+	for (int i = 0; i < cimg->height; i+=ms) {
+		for (int j = 0; j < cimg->width; j+=ms) {
+			for (int a = 0; a < ms && a+i < cimg->height; a++) {
+				for (int b = 0; b < ms && b+j < cimg->width; b++) {
+					CvScalar tmp = cvGet2D(cimg, i+a, j+b);
+					if ((int)tmp.val[0] > dithMx[a][b])
+						tmp.val[0] = 255;
+					else
+						tmp.val[0] = 0;
+					cvSet2D(cimg, i+a, j+b, tmp);
+				}
+			}
+		}
+	}
+	printf("[SUCCESS]\n");
+
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // D2 행렬
 void CImageProcessingSoftwareDlg::OnMatrixD2()
 {
-	MessageBox("D2 행렬");
+	printf("Log : Image D2 Matrix");
+	if (cimg == NULL){
+		printf("[FAILURE]\n");
+		return;
+	}
+
+	initUndo();
+	if(!isGray(cimg)) tranRgbToGray();
+	
+	const int ms = 4;
+	int dithMx[ms][ms] = { { 0,128,32,160 },{ 192,64,224,96 }
+	,{48,176,16,144},{240,112,208,80 }};
+
+	for (int i = 0; i < cimg->height; i += ms) {
+		for (int j = 0; j < cimg->width; j += ms) {
+			for (int a = 0; a < ms && i+a < cimg->height; a++) {
+				for (int b = 0; b < ms && j+b < cimg->width; b++) {
+					CvScalar tmp = cvGet2D(cimg, i + a, j + b);
+					if ((int)tmp.val[0] > dithMx[a][b])
+						tmp.val[0] = 255;
+					else
+						tmp.val[0] = 0;
+					cvSet2D(cimg, i + a, j + b, tmp);
+				}
+			}
+		}
+	}
+	printf("[SUCCESS]\n");
+
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // Negative 영상
 void CImageProcessingSoftwareDlg::OnNegative()
 {
-	MessageBox("Negative 영상");
+	printf("Log : Image  ");
+	if (cimg == NULL){
+		printf("[FAILURE]\n");
+		return;
+	}
+
+	initUndo();
+	if(!isGray(cimg)) tranRgbToGray();
+	
+	for (int i = 0; i < cimg->height; i++) {
+		for (int j = 0; j < cimg->width; j++) {
+			CvScalar tmp = cvGet2D(cimg, i, j);
+			tmp.val[0] = 255 - tmp.val[0];
+			cvSet2D(cimg, i, j, tmp);
+		}
+	}
+	printf("[SUCCESS]\n");
+
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // 히스토그램 스트레칭 (자동)
 void CImageProcessingSoftwareDlg::OnHistogramAuto()
 {
-	MessageBox("히스토그램 스트레칭 (자동)");
+	printf("Log : Image  ");
+	if (cimg == NULL){
+		printf("[FAILURE]\n");
+		return;
+	}
+
+	initUndo();
+	if(!isGray(cimg)) tranRgbToGray();
+	
+	printf("[SUCCESS]\n");
+
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // 히스토그램 스트레칭 (사용자 입력)
@@ -560,6 +893,33 @@ void CImageProcessingSoftwareDlg::DisplayIplImage(IplImage* pImgIpl, CDC* pDC, C
     }
 }
 
+<<<<<<< HEAD
+void CImageProcessingSoftwareDlg::initUndo(){
+
+	if (pimg != NULL && pimg != cimg) {
+		cvReleaseImage(&pimg);
+		pimg = NULL;
+	}
+	pimg = cvCloneImage(cimg);
+}
+
+bool CImageProcessingSoftwareDlg::isGray(IplImage *image){
+	if(image->nChannels == 1) return true;
+	return false;
+}
+
+bool CImageProcessingSoftwareDlg::tranRgbToGray(){
+	if (cimg == NULL || isGray(cimg)) 
+		return false;
+
+	initUndo();
+	IplImage* gray  = cvCreateImage(cvGetSize(cimg), IPL_DEPTH_8U, 1);
+    cvCvtColor(cimg, gray, CV_BGR2GRAY);
+	cvReleaseImage(&cimg);
+	cimg = gray;
+	return true;
+
+=======
 IplImage *CImageProcessingSoftwareDlg::reflect(IplImage *image, int value){
 	IplImage *tmpImage = cvCloneImage(image);
 	
@@ -589,4 +949,5 @@ IplImage *CImageProcessingSoftwareDlg::reflect(IplImage *image, int value){
 	}
 
 	return tmpImage;
+>>>>>>> feb3b19bee079a2b3f9ce352dbb94aeb36ca92c7
 }
