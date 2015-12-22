@@ -22,9 +22,6 @@
 
 #include <afxdisp.h>        // MFC 자동화 클래스입니다.
 
-#include <opencv2\opencv.hpp>
-#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
-
 
 #ifndef _AFX_NO_OLE_SUPPORT
 #include <afxdtctl.h>           // Internet Explorer 4 공용 컨트롤에 대한 MFC 지원입니다.
@@ -35,12 +32,9 @@
 
 #include <afxcontrolbars.h>     // MFC의 리본 및 컨트롤 막대 지원
 
-
-
-
-
-
-
+// My Setting
+#include <opencv2\opencv.hpp>
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console") // MFC창 + cmd창
 
 
 #ifdef _UNICODE

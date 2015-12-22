@@ -137,7 +137,14 @@ BOOL CImageProcessingSoftwareDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+	m_pDC = GetDlgItem(IDC_VIEW)->GetDC();
 
+    GetDlgItem(IDC_VIEW)->GetWindowRect(&dsprect);
+    ScreenToClient(&dsprect);
+    GetDlgItem(IDC_VIEW)->GetClientRect(&dlgrect);
+    dsprect.right = dlgrect.right;
+    dsprect.bottom = dlgrect.bottom;
+    InitManager();
 
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
@@ -196,43 +203,100 @@ HCURSOR CImageProcessingSoftwareDlg::OnQueryDragIcon()
 // 열기
 void CImageProcessingSoftwareDlg::OnOpen()
 {
-	MessageBox("열기");
+	// 필터 설정
+	char szFilter[]= "Image File(*.bmp;*.jpg)| *.bmp;*.jpg|ALL File(*.*)}";
+ 
+	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY, szFilter, NULL);
+	CString strPathName;
+
+	if(IDOK == dlg.DoModal()) {
+
+		strPathName = dlg.GetPathName();
+
+	}
+	else return;
+
+	printf("열기 : %s", strPathName);
+	cimg = cvLoadImage(strPathName, CV_LOAD_IMAGE_UNCHANGED);
+	pimg = cimg;
+
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // 저장
 void CImageProcessingSoftwareDlg::OnSave()
 {
-	MessageBox("저장");
+	if(cimg == nullptr){
+		AfxMessageBox(_T("이미지를 열지 않았습니다."));
+		return;
+	}
+
+	char strPathName[_MAX_PATH];
+	GetCurrentDirectory( _MAX_PATH, strPathName); // 현재 폴더 경로
+	StrCat(strPathName, "\\save.jpg");
+	printf("저장 : %s", strPathName);
+	if(!cvSaveImage(strPathName, cimg))
+		AfxMessageBox(_T("저장을 실패 했습니다."));
+	
 }
 
 // 다른이름으로 저장
 void CImageProcessingSoftwareDlg::OnDsave()
 {
-	MessageBox("다른이름으로 저장");
+	if(cimg == nullptr){
+		AfxMessageBox(_T("이미지를 열지 않았습니다."));
+		return;
+	}
+	// 필터 설정
+	char szFilter[]= "Image File(*.bmp;*.jpg)| *.bmp;*.jpg|ALL File(*.*)}";
+ 
+	CFileDialog dlg(FALSE, NULL, NULL, OFN_HIDEREADONLY, szFilter, NULL);
+
+	if(IDOK == dlg.DoModal()) {
+
+		CString strPathName = dlg.GetPathName();
+		printf("다른이름으로 저장 : %s", strPathName);
+		if(!cvSaveImage(strPathName, cimg))
+		AfxMessageBox(_T("저장을 실패 했습니다."));
+	}
 }
 
 // 끝내기
 void CImageProcessingSoftwareDlg::OnExit()
 {
-	MessageBox("끝내기");
+	PostQuitMessage(WM_QUIT);
 }
 
 // 실행 취소
 void CImageProcessingSoftwareDlg::OnUndo()
 {
-	MessageBox("실행취소");
+	if(cimg != pimg){
+		cvReleaseImage(&cimg);
+		cimg = pimg;
+		DisplayIplImage(cimg, m_pDC, dsprect);
+	}
 }
 
 // 좌우반전
 void CImageProcessingSoftwareDlg::OnTransLr()
 {
-	MessageBox("좌우반전");
+	if(cimg != pimg){
+		cvReleaseImage(&pimg);
+		pimg = cimg;
+	}
+	cimg = reflect(cimg, 1);
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // 상하반전
 void CImageProcessingSoftwareDlg::OnTransOd()
 {
-	MessageBox("상하반전");
+	if(cimg != pimg){
+		cvReleaseImage(&pimg);
+		pimg = cimg;
+	}
+	cimg = reflect(cimg, -1);
+	DisplayIplImage(cimg, m_pDC, dsprect);
 }
 
 // 확대 with NN
@@ -434,4 +498,95 @@ void CImageProcessingSoftwareDlg::OnHelp()
 	MessageBox("도움말");
 }
 
+void CImageProcessingSoftwareDlg::InitManager()
+{
+    CStatic *staticSize = (CStatic *)GetDlgItem(IDC_VIEW);
 
+    staticSize->GetClientRect(dsprect);
+
+    m_pBmiColor = (BITMAPINFOHEADER*)malloc(sizeof(BITMAPINFOHEADER));
+    m_pBmiColor->biSize = sizeof(BITMAPINFOHEADER);
+    m_pBmiColor->biBitCount = 24;
+    m_pBmiColor->biWidth = 0;
+    m_pBmiColor->biHeight = 0;
+    m_pBmiColor->biPlanes = 1;
+
+    m_pBmiColor->biCompression = BI_RGB;
+    m_pBmiColor->biSizeImage = 0;
+
+    m_pBmiColor->biXPelsPerMeter = 0;
+    m_pBmiColor->biYPelsPerMeter = 0;
+
+    m_pBmiColor->biClrUsed = 0;
+    m_pBmiColor->biClrImportant = 0;
+    m_pBmiColor->biClrUsed = 0;
+}
+
+void CImageProcessingSoftwareDlg::DisplayIplImage(IplImage* pImgIpl, CDC* pDC, CRect rect)
+{
+    BITMAPINFO bitmapInfo;
+
+    bitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    bitmapInfo.bmiHeader.biPlanes = 1;
+    bitmapInfo.bmiHeader.biCompression = BI_RGB;
+    bitmapInfo.bmiHeader.biXPelsPerMeter = 100;
+    bitmapInfo.bmiHeader.biYPelsPerMeter = 100;
+    bitmapInfo.bmiHeader.biClrUsed = 0;
+    bitmapInfo.bmiHeader.biClrImportant = 0;
+    bitmapInfo.bmiHeader.biSizeImage = 0;
+    bitmapInfo.bmiHeader.biWidth = pImgIpl->width;
+    bitmapInfo.bmiHeader.biHeight = -pImgIpl->height;
+
+    IplImage* tempImage = NULL;
+
+    if (pImgIpl->nChannels == 3)
+    {
+        tempImage = (IplImage*)cvClone(pImgIpl);
+        bitmapInfo.bmiHeader.biBitCount = tempImage->depth * tempImage->nChannels;
+    }
+    else if (pImgIpl->nChannels == 1)
+    {
+        tempImage = cvCreateImage(cvGetSize(pImgIpl), IPL_DEPTH_8U, 3);
+        cvCvtColor(pImgIpl, tempImage, CV_GRAY2BGR);
+        bitmapInfo.bmiHeader.biBitCount = tempImage->depth * tempImage->nChannels;
+    }
+
+    if (tempImage != NULL)
+    {
+        pDC->SetStretchBltMode(COLORONCOLOR);
+        ::StretchDIBits(pDC->GetSafeHdc(), rect.left, rect.top, rect.right, rect.bottom,
+            0, 0, tempImage->width, tempImage->height, tempImage->imageData, &bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
+        cvReleaseImage(&tempImage);
+    }
+}
+
+IplImage *CImageProcessingSoftwareDlg::reflect(IplImage *image, int value){
+	IplImage *tmpImage = cvCloneImage(image);
+	
+	int wth = tmpImage->width; 
+	int hit = tmpImage->height;
+
+	CvScalar temp;
+
+	if (value > 0){
+
+		for (int j = 0; j < hit; j++)
+			for (int i = 0; i < wth / 2; i++){
+
+				temp = cvGet2D(tmpImage, j, i);
+				cvSet2D(tmpImage, j, i, cvGet2D(tmpImage, j, wth - i - 1));
+				cvSet2D(tmpImage, j, wth - 1 - i, temp);
+			}
+	}
+	else{
+		for (int j = 0; j < hit / 2; j++)
+			for (int i = 0; i < wth; i++){
+
+				temp = cvGet2D(tmpImage, j, i);
+				cvSet2D(tmpImage, j, i, cvGet2D(tmpImage, hit-j-1, i));
+				cvSet2D(tmpImage, hit - j - 1, i, temp);
+			}
+	}
+
+	return tmpImage;
+}

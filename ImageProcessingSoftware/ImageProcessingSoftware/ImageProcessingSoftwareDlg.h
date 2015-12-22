@@ -18,11 +18,19 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 지원입니다.
 
-
 // 구현입니다.
+	void InitManager();
+	void DisplayIplImage(IplImage* pImgIpl, CDC* pDC, CRect rect);
+
+	IplImage *reflect(IplImage *image, int value);
 private:
-	IplImage *image;
-	IplImage *preimage;
+	IplImage *cimg;	// current image
+	IplImage *pimg;	// past image
+
+	CDC* m_pDC;
+	BITMAPINFOHEADER* m_pBmiColor;
+	CRect dsprect;
+	CRect dlgrect;
 
 protected:
 	HICON m_hIcon;
