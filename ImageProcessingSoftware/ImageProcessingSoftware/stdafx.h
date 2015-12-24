@@ -34,8 +34,9 @@
 
 // My Setting
 #include <opencv2\opencv.hpp>
+#include <cmath>
+#include <algorithm>
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console") // MFCâ + cmdâ
-
 
 #ifdef _UNICODE
 #if defined _M_IX86

@@ -23,51 +23,28 @@ public:
 	void InitManager();
 	void DisplayIplImage(IplImage* pImgIpl, CDC* pDC, CRect rect);
 
-<<<<<<< HEAD
 	void initUndo();
-	bool isGray(IplImage *image);
 	bool tranRgbToGray();
-
-	/*
-	double round( double value, int pos )
-	{
-		double temp;
-		temp = value * pow( 10, pos );  // 원하는 소수점 자리수만큼 10의 누승을 함
-		temp = floor( temp + 0.5 );          // 0.5를 더한후 버림하면 반올림이 됨
-		temp *= pow( 10, -pos );           // 다시 원래 소수점 자리수로
-		return temp;
-	} 
-
-	bool isOpen();
-
-	void reflect(IplImage *image, int value);		// 반전
-	void brighten(IplImage *image, int value);		// 밝기
-	void bitPlane(IplImage * image);				// bit plane
-	void negative(IplImage *image);				// negative
-	void dithering(IplImage *image);				// D행렬
-	void dithering2(IplImage *image);				// D2행렬
-	void histogramStretchingAuto(IplImage *image);	// 히스토그램 스트레칭(자동)
-	void histogramStretchingUser(IplImage *image);	// 히스토그램 스트레칭(사용자 입력)
-	void histogramEqualization(IplImage *image);	// 히스토그램 평준화(Equalization)
-	void Thresholding(IplImage *image);			// 임계치 필터링(Thresholding)
-	void histogramWindow(char* windowName, IplImage* image); // 히스토그램 윈도우
-	*/
+	void initHist();
+	int round(double x) {
+		if (x >= 0) return (int) (x + 0.5);
+		return (int) (x - 0.5);
+	}
+	IplImage* GetThresholding(IplImage* grayImage);
+	IplImage* GetBinErosion(IplImage* grayImage);
+	IplImage* GetBinDilation(IplImage* grayImage);
+	IplImage* GetGrayErosion(IplImage* grayImage);
+	IplImage* GetGrayDilation(IplImage* grayImage);
 private:
 	IplImage *cimg;	// current image
 	IplImage *pimg;	// past image
-	int m_value;	
-=======
-	IplImage *reflect(IplImage *image, int value);
-private:
-	IplImage *cimg;	// current image
-	IplImage *pimg;	// past image
->>>>>>> feb3b19bee079a2b3f9ce352dbb94aeb36ca92c7
 
 	CDC* m_pDC;
 	BITMAPINFOHEADER* m_pBmiColor;
 	CRect dsprect;
 	CRect dlgrect;
 
+	int hist[256];
 protected:
 	HICON m_hIcon;
 
